@@ -91,6 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
       _logs.addAll(filesTrans.map((f) => f.path));
     });*/
 
+    //check if there's a version file in both folders
+    if (!filesEn.any((f) => f.path.endsWith("\\version"))) {
+      newLog("No version file in English folder.");
+      return;
+    }
+    if (!filesTrans.any((f) => f.path.endsWith("\\version"))) {
+      newLog("No version file in Translated folder.");
+      return;
+    }
+
     List<String> pathsEn =
         filesEn.map((f) => f.path.substring(rootEn.length)).toList();
     List<String> pathsTrans =
