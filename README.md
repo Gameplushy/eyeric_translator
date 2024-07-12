@@ -1,16 +1,20 @@
 # eyeric_translator
 
-A new Flutter project.
+This repo is a tool for updating your translated folder for the hit video game [The Void Rains Upon Her Heart](https://store.steampowered.com/app/790060/The_Void_Rains_Upon_Her_Heart/).
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+This Flutter app saves the folders path for the english folder as well as the translated one, plus the language you're using, so you don't have to reinput them for each single update.
+This app does NOT overwrite your translated folder. Instead, it creates a new one with the suffix "_new".
 
-A few resources to get you started if this is your first Flutter project:
+## How to use
+![Screenshot of what you see when opening the app](image-1.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Click the folder icon in order to get the path for the english/translated folder.
+The last two text fields are for the version file.
+Click the Update button to update your folder! The white box will fill with logs (might be too verbose, as every line of a file will be logged after a single difference is noticed) showcasing progress. Once "All done!" appears, the process is finished.
+The Clean button is for removing all logs.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Disclaimers
+
+To check if the folders are valid, it only checks if the version file exists. Please make sure to only use localization folders for this game, as I cannot garantee what would happen with anything else (at worst it should only duplicate a folder). I do not take responsability for any missuse of this software.
