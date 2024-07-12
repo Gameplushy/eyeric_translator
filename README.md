@@ -12,7 +12,7 @@ This app does NOT overwrite your translated folder. Instead, it creates a new on
 
 Click the folder icon in order to get the path for the english/translated folder.
 The last two text fields are for the version file.
-Click the Update button to update your folder! The white box will fill with logs (might be too verbose, as every line of a file will be logged after a single difference is noticed) showcasing progress. Once "All done!" appears, the process is finished.
+Click the Update button to update your folder! The white box will fill with logs showcasing progress. Once "All done!" appears, the process is finished.
 The Clean button is for removing all logs.
 
 ## Disclaimers

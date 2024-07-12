@@ -140,6 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
         createFile(rootTrans, sf, versionFile);
         continue;
       }
+      bool notify =true;
       List<String> textEn = await mapEn[sf]!.readAsLines();
       List<String> textTrans = await mapTrans[sf]!.readAsLines();
       List<String> textRes = [];
@@ -155,8 +156,12 @@ class _MyHomePageState extends State<MyHomePage> {
           String keyEn = textEn[lineEn].split(":").first;
           String keyTrans = textTrans[lineTrans].split(":").first;
           if (keyEn != keyTrans) {
-            newLog(
-                "Key mismatch in file $sf at line $lineEn : $keyEn != $keyTrans");
+            if(notify) {
+              newLog("$sf: New data found.");
+              notify = false;
+            }
+            /*newLog(
+                "$sf at line $lineEn : $keyEn != $keyTrans");*/
             textRes.add(textEn[lineEn]);
           } else {
             textRes.add(textTrans[lineTrans]);
@@ -165,8 +170,12 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           //check keyen == keytrans
           if (textEn[lineEn] != textTrans[lineTrans]) {
-            newLog(
-                "Line mismatch in file $sf at line $lineEn : ${textEn[lineEn]} != ${textTrans[lineTrans]}");
+                        if(notify) {
+              newLog("$sf: New data found.");
+              notify = false;
+            }
+            /*newLog(
+                "Line mismatch in file $sf at line $lineEn : ${textEn[lineEn]} != ${textTrans[lineTrans]}");*/
             textRes.add(textEn[lineEn]);
           } else {
             textRes.add(textTrans[lineTrans]);
