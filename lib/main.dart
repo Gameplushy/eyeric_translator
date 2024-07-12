@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,15 +38,20 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _translatedFolderController =
       TextEditingController();
 
+  late final SharedPreferences prefs;
+
   @override
   void initState() {
     super.initState();
-    _englishFolderController.value = const TextEditingValue(
-        text:
-            "C:\\Program Files (x86)\\Steam\\steamapps\\common\\The Void Rains Upon Her Heart\\language\\english");
-    _translatedFolderController.value = const TextEditingValue(
-        text:
-            "C:\\Program Files (x86)\\Steam\\steamapps\\common\\The Void Rains Upon Her Heart\\custom languages\\français");
+    SharedPreferences.getInstance().then((value) {
+      prefs = value;
+      _englishFolderController.value = TextEditingValue(
+          text: prefs.getString("englishFolder") ??
+              "C:\\Program Files (x86)\\Steam\\steamapps\\common\\The Void Rains Upon Her Heart\\language\\english");
+      _translatedFolderController.value = TextEditingValue(
+          text: prefs.getString("translatedFolder") ??
+              "C:\\Program Files (x86)\\Steam\\steamapps\\common\\The Void Rains Upon Her Heart\\custom languages");
+    });
   }
 
   void newLog(String s) {
@@ -63,6 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void updateTranslation() async {
     String rootEn = _englishFolderController.value.text;
     String rootTrans = _translatedFolderController.value.text;
+
+    prefs.setString("englishFolder", rootEn);
+    prefs.setString("translatedFolder", rootTrans);
 
     Directory dirEn = Directory.fromUri(Uri.file(rootEn));
     List<File> filesEn =
