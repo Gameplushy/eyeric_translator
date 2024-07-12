@@ -37,6 +37,8 @@ class _MyHomePageState extends State<MyHomePage> {
       TextEditingController();
   final TextEditingController _translatedFolderController =
       TextEditingController();
+  final TextEditingController _languageController = TextEditingController();
+  final TextEditingController _versionController = TextEditingController();
 
   late final SharedPreferences prefs;
 
@@ -51,6 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _translatedFolderController.value = TextEditingValue(
           text: prefs.getString("translatedFolder") ??
               "C:\\Program Files (x86)\\Steam\\steamapps\\common\\The Void Rains Upon Her Heart\\custom languages");
+      _languageController.value = TextEditingValue(text: prefs.getString("language") ?? "");
+      _versionController.value = const TextEditingValue(text: "Early Access v8.9e");
     });
   }
 
@@ -69,9 +73,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void updateTranslation() async {
     String rootEn = _englishFolderController.value.text;
     String rootTrans = _translatedFolderController.value.text;
+    String language = _languageController.value.text;
+    String version = _versionController.value.text;
 
     prefs.setString("englishFolder", rootEn);
     prefs.setString("translatedFolder", rootTrans);
+    prefs.setString("language", language);
 
     Directory dirEn = Directory.fromUri(Uri.file(rootEn));
     List<File> filesEn =
@@ -119,7 +126,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for (String sf in oldStuff) {
       if (sf == "\\version") {
-        createFile(rootTrans, sf, await mapTrans[sf]!.readAsString());
+        String versionFile = "[version]\r\nname=\"$language\"\r\nversion=\"$version\"";
+        createFile(rootTrans, sf, versionFile);
         continue;
       }
       List<String> textEn = await mapEn[sf]!.readAsLines();
@@ -183,12 +191,12 @@ class _MyHomePageState extends State<MyHomePage> {
     newLog("All done!");
   }
 
-  void createFile(String root, String sf, String content) async{
-      File newFile = File("${root}_new$sf");
-      if (!await newFile.parent.exists()) {
-        await newFile.parent.create(recursive: true);
-      }
-      await newFile.writeAsString(content);
+  void createFile(String root, String sf, String content) async {
+    File newFile = File("${root}_new$sf");
+    if (!await newFile.parent.exists()) {
+      await newFile.parent.create(recursive: true);
+    }
+    await newFile.writeAsString(content);
   }
 
   @override
@@ -245,6 +253,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
                     },
                   )),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            TextField(
+              controller: _languageController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text("Language"),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            TextField(
+              controller: _versionController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text("Game Version"),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
             ),
             const SizedBox(
               height: 16,
